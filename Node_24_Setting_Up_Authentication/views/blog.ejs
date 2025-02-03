@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- including the components here -->
+    <%- include('./partials/head') %>
+    <title>Blog Page</title>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+    <div class="container mt-3">
+      <h1><%= blog.title %></h1>
+      <img src="<%= blog.coverImageURL %>" width="700px" />
+      <!-- pre tag basically yh krta hai ki jitni bhi spacing hoti hai usko maintain krke rkhata hai -->
+      <pre class="mt-3"> <%= blog.body  %></pre>
+    </div>
+    <div class="container mt-4">
+      <img
+        src="<%= blog.createdBy.profileImageURL%>"
+        alt=""
+        width="50px"
+        height="50px"
+        style="border-radius: 50%; object-fit: cover"
+      />
+      <%= blog.createdBy.fullName %>
+    </div>
+
+    <div class="container mt-4">
+      <h1>Comments (<%= comments.length %>)</h1>
+      <% if (locals.user) { %>
+      <form action="/blog/comment/<%=blog._id %>" method="POST">
+        <div class="mb-3">
+          <input
+            type="text"
+            name="content"
+            class="form-control"
+            placeholder="Write a comment"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      
+      <% } %>
+      <div class="mt-3">
+        <% comments.forEach(comment => { %>
+          <div class="flex">
+            <img src="<%= comment.createdBy.profileImageURL%>" width="50px" >
+            <%= comment.createdBy.fullName %> 
+            <pre><%= comment.content%></pre>
+          </div>
+        <% }) %>
+       </div>
+    </div>
+
+    <%- include('./partials/scripts') %>
+  </body>
+</html>
